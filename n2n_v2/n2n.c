@@ -95,10 +95,18 @@ SOCKET open_socket(int local_port, int bind_any) {
 
 
 
+
+
 int traceLevel = 2 /* NORMAL */;
 int useSyslog = 0, syslog_opened = 0;
 
+
+
+
+
 #define N2N_TRACE_DATESIZE 32
+
+
 void traceEvent(int eventTraceLevel, char* file, int line, char * format, ...) {
   va_list va_ap;
 
@@ -108,6 +116,7 @@ void traceEvent(int eventTraceLevel, char* file, int line, char * format, ...) {
     char theDate[N2N_TRACE_DATESIZE];
     char *extra_msg = "";
     time_t theTime = time(NULL);
+
 #ifdef WIN32
 	int i;
 #endif
@@ -119,7 +128,7 @@ void traceEvent(int eventTraceLevel, char* file, int line, char * format, ...) {
      */
 
     memset(buf, 0, sizeof(buf));
-    strftime(theDate, N2N_TRACE_DATESIZE, "%d/%b/%Y %H:%M:%S", localtime(&theTime));
+    strftime(theDate, N2N_TRACE_DATESIZE, "%Y-%m-%d %H:%M:%S", localtime(&theTime));
 
     va_start (va_ap, format);
     vsnprintf(buf, sizeof(buf)-1, format, va_ap);
@@ -157,6 +166,9 @@ void traceEvent(int eventTraceLevel, char* file, int line, char * format, ...) {
   }
 
 }
+
+
+
 
 /* *********************************************** */
 
@@ -256,7 +268,7 @@ void hexdump(const uint8_t * buf, size_t len)
 void print_n2n_version() {
   printf("Welcome to n2n v.%s for %s\n"
          "Built on %s\n"
-	 "Copyright 2007-09 - http://www.ntop.org\n\n",
+	 "Copyright 2019-2020 - http://www.ntop.org\n\n",
          n2n_sw_version, n2n_sw_osName, n2n_sw_buildDate);
 }
 
